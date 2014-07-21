@@ -1,0 +1,7 @@
+   name: markdown-mode
+ source: git:https://github.com/scaled/markdown-mode.git
+version: 1.0
+descrip: Provides support for editing Markdown files.
+ weburl: https://github.com/scaled/markdown-mode
+license: New BSD
+ depend: git:https://github.com/scaled/textmate-grammar.git

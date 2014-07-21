@@ -1,0 +1,116 @@
+name: Markdown
+scopeName: text.html.markdown
+repository:
+patterns:
+ # Regular expression for a [text](file) or an image link ![text](file).
+ single:
+  name: meta.link.markdown
+  pattern: (!?\[[^]]+\])\((\S+)(\s+"[^"]+")?\)
+  caps: 1=markup.link.text.markdown 2=markup.link.target.markdown 3=markup.link.title.markdown
+ # Regular expression for a reference link [text][id].
+ single:
+  name: meta.link.reference.markdown
+  pattern: (!?\[[^]]+?\])[ ]?(\[[^]]*?\])
+  caps: 1=markup.link.text.markdown 2=markup.link.ref.markdown
+ # Regular expression for a footnote definition [^id]: ...
+ single:
+  name: meta.link.footnote.markdown
+  pattern: ^ {0,3}(\[\^\d+\]):\s+(.*)$
+  caps: 1=markup.link.text.markdown 2=markup.link.title.markdown
+ # Regular expression for a link definition [id]: ...
+ single:
+  name: meta.link.def.markdown
+  pattern: ^ {0,3}(\[[^]^][^]]*\]):\s+(\S+)(\s+)?(\"[^"]+\")?
+  caps: 1=markup.link.text.markdown 2=markup.link.target.markdown 4=markup.link.title.markdown
+ # Regular expression for [[WikiLinks]] and [[PageName|link text]].
+ single:
+  pattern: (\[\[)([^]|]+)(\|([^]]+))?(\]\])
+  caps: 1=markup.link.text.markdown 2=markup.link.text.markdown \
+        4=markup.link.title.markdown 5=markup.link.text.markdown
+ # Regular expression for a [text] link.
+ single:
+  name: meta.link.markdown
+  pattern: (\[[^]]+\])
+  caps: 1=markup.link.text.markdown
+ # Regular expression for level 1-6 atx-style (hash mark) headers. Yay for no abstraction!
+ single:
+  name: markup.heading.1.markdown
+  pattern: ^(# )(.*?)($| #+$)
+ single:
+  name: markup.heading.2.markdown
+  pattern: ^(## )(.*?)($| #+$)
+ single:
+  name: markup.heading.3.markdown
+  pattern: ^(### )(.*?)($| #+$)
+ single:
+  name: markup.heading.4.markdown
+  pattern: ^(#### )(.*?)($| #+$)
+ single:
+  name: markup.heading.5.markdown
+  pattern: ^(##### )(.*?)($| #+$)
+ single:
+  name: markup.heading.6.markdown
+  pattern: ^(###### )(.*?)($| #+$)
+ # TODO (these don't work): Regular expression for level 1-2 setext-style (underline) headers.
+ single:
+  name: markup.heading.1.markdown
+  pattern: ^(.*)\n(===+)$
+ single:
+  name: markup.heading.2.markdown
+  pattern: ^(.*)\n(---+)$
+ # Regular expression for matching Markdown horizontal rules.
+ single:
+  name: markup.rule.markdown
+  pattern: ^(\*[ ]?\*[ ]?\*[ ]?[\* ]*|-[ ]?-[ ]?-[--- ]*)$
+ # Regular expression for matching inline code fragments (single backtick).
+ single:
+  pattern: ^(`[^`]+`)
+  caps: 1=markup.code.inline.markdown
+ single:
+  pattern: [^\\](`[^`]+`)
+  caps: 1=markup.code.inline.markdown
+ # Regular expression for matching multi-line code fragments (triple backtick).
+ multi:
+  contentName: markup.code.block.markdown
+  begin: ^(```)(.*)$
+  bcaps: 1=markup.punctuation.code.block.markdown 2=markup.code.lang.markdown
+  end: ^```
+  ecaps: 0=markup.punctuation.code.block.markdown
+ # Regular expression for matching preformatted text sections.
+ # (Disabled because ``` syntax is much better and avoids ambiguity with nested lists.)
+ # single:
+ #  name: markup.pre.markdown
+ #  pattern: ^(    |\t).*$
+ # Regular expression for matching list markers.
+ single:
+  name: markup.list.markdown
+  pattern: ^[ \t]*([0-9]+\.|[\*\+-])[ ]
+ # Regular expression for matching bold text.
+ single:
+  pattern: ^(([*_]{2})(.|\n[^\n])*?\S\2)
+  caps: 1=markup.bold.markdown
+ single:
+  pattern: [^\\](([*_]{2})(.|\n[^\n])*?\S\2)
+  caps: 1=markup.bold.markdown
+ # Regular expression for matching italic text.
+ single:
+  pattern: ^(([*_])(.|\n[^\n])*?\S\2)
+  caps: 1=markup.italic.markdown
+ single:
+  pattern: [^*_\\](([*_])(.|\n[^\n])*?\S\2)
+  caps: 1=markup.italic.markdown
+ # Regular expression for matching blockquote lines.
+ single:
+  name: markup.blockquote.markdown
+  pattern: ^>.*$
+ # Regular expression for matching inline URIs, and in angle brackets.
+ single:
+  name: markup.uri.markdown
+  pattern: (http|https|file):[^]<>,;() ]+
+ single:
+  name: markup.uri.markdown
+  pattern: (<)(http|https|file):[^]<>,;()]+(>)
+ # Regular expression for matching inline email addresses.
+ single:
+  name: markup.email.markdown
+  pattern: <[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})>
