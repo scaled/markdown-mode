@@ -6,7 +6,7 @@ package scaled.markdown
 
 import org.junit.Assert._
 import org.junit._
-import scaled.TextStore
+import scaled._
 import scaled.grammar._
 import scaled.impl.BufferImpl
 
@@ -23,7 +23,7 @@ class MarkdownTest {
     /* 7*/ "[link]: target").mkString("\n")
 
   val markdown = Grammar.parseNDF(getClass.getClassLoader.getResourceAsStream("Markdown.ndf"))
-  val grammars = List(markdown)
+  val grammars = Seq(markdown)
 
   @Test def debugGrammar () {
     // markdown.print(System.out)
