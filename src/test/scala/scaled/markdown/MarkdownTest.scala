@@ -23,7 +23,7 @@ class MarkdownTest {
     /* 7*/ "[link]: target").mkString("\n")
 
   val markdown = Grammar.parseNDF(getClass.getClassLoader.getResourceAsStream("Markdown.ndf"))
-  val grammars = Seq(markdown)
+  val grammars = Grammar.Set(markdown)
 
   @Test def debugGrammar () {
     // markdown.print(System.out)

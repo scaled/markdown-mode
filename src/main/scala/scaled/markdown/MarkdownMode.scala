@@ -43,8 +43,7 @@ object MarkdownConfig extends Config.Defs {
     effacer("markup.code.lang", subHeaderStyle)
   )
 
-  def mdGrammar = Grammar.parseNDF(stream("Markdown.ndf"))
-  lazy val grammars = Seq(mdGrammar)
+  val grammars = reloadable(Seq("Markdown.ndf"))(Grammar.parseNDFs)
 }
 
 @Major(name="markdown",
@@ -57,6 +56,6 @@ class MarkdownMode (env :Env) extends GrammarTextMode(env) {
 
   override def configDefs = MarkdownConfig :: super.configDefs
   // override def stylesheets = stylesheetURL("/todo.css") :: super.stylesheets
-  override protected def grammars = MarkdownConfig.grammars
+  override protected def grammars = MarkdownConfig.grammars.get
   override protected def effacers = MarkdownConfig.effacers
 }
