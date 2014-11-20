@@ -43,7 +43,7 @@ object MarkdownConfig extends Config.Defs {
     effacer("markup.code.lang", subHeaderStyle)
   )
 
-  val grammars = reloadable(Seq("Markdown.ndf"))(Grammar.parseNDFs)
+  val grammars = resource("Markdown.ndf")(Grammar.parseNDFs)
 }
 
 @Major(name="markdown",
