@@ -8,7 +8,7 @@ import scaled._
 import scaled.grammar._
 import scaled.major.TextConfig
 import scaled.Matcher
-import scaled.util.Filler
+import scaled.util.{Filler, Paragrapher}
 
 object MarkdownConfig extends Config.Defs {
   import EditorConfig._
@@ -60,6 +60,20 @@ class MarkdownMode (env :Env) extends GrammarTextMode(env) {
   // override def stylesheets = stylesheetURL("/todo.css") :: super.stylesheets
   override protected def grammars = MarkdownConfig.grammars.get
   override protected def effacers = MarkdownConfig.effacers
+
+  override def mkParagrapher (syntax :Syntax) = new Paragrapher(syntax, buffer) {
+    // don't extend paragraph upwards if the current top is a list item or header
+    override def canPrepend (row :Int) =
+      super.canPrepend(row) && !isListItemOrHeader(line(row+1))
+    // don't extend paragraph downwards if the new line is a list item or header
+    override def canAppend (row :Int) =
+      super.canAppend(row) && !isListItemOrHeader(line(row))
+
+    private def isListItemOrHeader (line :LineV) = {
+      var start = line.firstNonWS
+       line.charAt(start) == '#' || line.matches(ListItemM, start)
+    }
+  }
 
   override def refillLinesIn (start :Loc, end :Loc) {
     // determine whether the first line starts with a list item char (+-#*) followed by space
