@@ -64,7 +64,7 @@ patterns:
   pattern: ^(\*[ ]?\*[ ]?\*[ ]?[\* ]*|-[ ]?-[ ]?-[--- ]*)$
  # Regular expression for matching inline code fragments (single backtick).
  single:
-  pattern: ^(`[^`]+`)
+  pattern: (`[^`]+`)
   caps: 1=markup.code.inline.markdown
  single:
   pattern: [^\\](`[^`]+`)
