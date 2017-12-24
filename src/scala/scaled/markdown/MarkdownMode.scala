@@ -6,17 +6,17 @@ package scaled.markdown
 
 import scaled._
 import scaled.grammar._
-import scaled.major.TextConfig
 import scaled.Matcher
 import scaled.util.{Filler, Paragrapher}
 
-object MarkdownConfig extends Config.Defs {
+@Plugin(tag="textmate-grammar")
+class MarkdownGrammarPlugin extends GrammarPlugin {
   import EditorConfig._
-  import TextConfig._
-  import GrammarConfig._
+  import scaled.major.TextConfig._
 
-  // maps TextMate grammar scopes to Scaled style definitions
-  val effacers = List(
+  override def grammars = Map("text.html.markdown" -> "Markdown.ndf")
+
+  override def effacers = List(
     effacer("markup.heading.1", headerStyle),
     effacer("markup.heading.2", subHeaderStyle),
     effacer("markup.heading.3", sectionStyle),
@@ -44,8 +44,6 @@ object MarkdownConfig extends Config.Defs {
     effacer("markup.code.block", listStyle),
     effacer("markup.code.lang", subHeaderStyle)
   )
-
-  val grammars = resource("Markdown.ndf")(Grammar.parseNDFs)
 }
 
 @Major(name="markdown",
@@ -56,10 +54,8 @@ class MarkdownMode (env :Env) extends GrammarTextMode(env) {
 
   override def dispose () {} // nada for now
 
-  override def configDefs = MarkdownConfig :: super.configDefs
+  override def langScope = "text.html.markdown"
   // override def stylesheets = stylesheetURL("/todo.css") :: super.stylesheets
-  override protected def grammars = MarkdownConfig.grammars.get
-  override protected def effacers = MarkdownConfig.effacers
 
   override def mkParagrapher (syntax :Syntax) = new Paragrapher(syntax, buffer) {
     // don't extend paragraph upwards if the current top is a list item or header

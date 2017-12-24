@@ -22,15 +22,15 @@ class MarkdownTest {
     /* 4*/ "target. And a [link][ref] with reference.",
     /* 7*/ "[link]: target").mkString("\n")
 
-  val markdown = Grammar.parseNDF(getClass.getClassLoader.getResourceAsStream("Markdown.ndf"))
-  val grammars = Grammar.Set(markdown)
+  val markdown = Grammar.parseNDF(getClass.getClassLoader.getResource("Markdown.ndf"))
+  val grammars = Seq(markdown)
 
   @Test def debugGrammar () {
     // markdown.print(System.out)
     // markdown.scopeNames foreach println
 
     val buffer = BufferImpl(new TextStore("Test.md", "", testMD))
-    val scoper = new Scoper(grammars, buffer, Nil)
+    val scoper = Grammar.testScoper(grammars, buffer, Nil)
     // println(scoper.showMatchers(Set("#internalSubset", "#tagStuff", "#entity")))
     0 until buffer.lines.length foreach { ii => println(ii + ": " + scoper.showScopes(ii)) }
   }
