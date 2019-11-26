@@ -25,13 +25,13 @@ class MarkdownTest {
   val markdown = Grammar.parseNDF(getClass.getClassLoader.getResource("Markdown.ndf"))
   val grammars = Seq(markdown)
 
-  @Test def debugGrammar () {
+  @Test def debugGrammar () :Unit = {
     // markdown.print(System.out)
     // markdown.scopeNames foreach println
 
     val buffer = BufferImpl(new TextStore("Test.md", "", testMD))
     val scoper = Grammar.testScoper(grammars, buffer, Nil)
     // println(scoper.showMatchers(Set("#internalSubset", "#tagStuff", "#entity")))
-    0 until buffer.lines.length foreach { ii => println(ii + ": " + scoper.showScopes(ii)) }
+    0 until buffer.lines.length foreach { ii => println(s"$ii: ${scoper.showScopes(ii)}") }
   }
 }

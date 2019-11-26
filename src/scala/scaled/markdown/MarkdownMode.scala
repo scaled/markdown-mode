@@ -52,7 +52,7 @@ class MarkdownGrammarPlugin extends GrammarPlugin {
        desc="A major mode for editing Markdown files.")
 class MarkdownMode (env :Env) extends GrammarTextMode(env) {
 
-  override def dispose () {} // nada for now
+  override def dispose () :Unit = {} // nada for now
 
   override def langScope = "text.html.markdown"
   // override def stylesheets = stylesheetURL("/todo.css") :: super.stylesheets
@@ -71,7 +71,7 @@ class MarkdownMode (env :Env) extends GrammarTextMode(env) {
     }
   }
 
-  override def refillLinesIn (start :Loc, end :Loc) {
+  override def refillLinesIn (start :Loc, end :Loc) :Unit = {
     // determine whether the first line starts with a list item char (+-#*) followed by space
     var first = buffer.line(start)
     var firstStart = first.firstNonWS
